@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Turkiston Shield — Demo</title>
+<style>
+:root{--bg:#0b1324;--panel:#111c33;--line:#25344f;--tx:#e9eef7;--mut:#94a3bd;--ac:#d9b24c;--ac2:#0b1324;--bad:#f0716b;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:light){:root{--bg:#eef1f6;--panel:#fff;--line:#d5dce8;--tx:#13213a;--mut:#5b6c88;--ac:#8a6a12;--ac2:#fff;--bad:#c63d36}}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--tx);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+#app{max-width:1240px;margin:0 auto;padding:16px 20px}
+h1,h2,h3{margin:0;font-weight:650;letter-spacing:-.01em}
+.mut{color:var(--mut)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px}
+input,select,button{font:inherit;color:var(--tx);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px 12px;min-height:44px}
+input:focus-visible,select:focus-visible,button:focus-visible{outline:2px solid var(--ac);outline-offset:1px}
+button{cursor:pointer}
+button.pri{background:var(--ac);color:var(--ac2);border-color:var(--ac);font-weight:600}
+.login{max-width:380px;margin:8vh auto 0;display:grid;gap:12px}
+.err{color:var(--bad);min-height:1.4em;font-size:14px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:14px}
+.badge{border:1px solid var(--line);border-radius:99px;padding:2px 10px;font-size:13px;color:var(--mut)}
+.filters{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin-bottom:10px}
+.filters .q{grid-column:1/-1}
+.list{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px;margin-top:10px;align-items:start}
+.list details{margin-top:0}
+.row{display:flex;gap:12px;align-items:center;text-align:left;width:100%;background:var(--panel);padding:12px}
+.av{flex:none;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-weight:700;color:#0e1a2b}
+.big .av{width:84px;height:84px;font-size:28px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin-top:12px}
+dl{margin:8px 0 0;display:grid;grid-template-columns:auto 1fr;gap:6px 14px}
+dt{color:var(--mut)}dd{margin:0}
+.tag{display:inline-block;border:1px solid var(--line);border-radius:6px;padding:1px 8px;font-size:13px;margin:2px 4px 2px 0}
+.hide{color:var(--mut);font-style:italic}
+.note{font-size:13px;color:var(--mut);margin-top:16px}
+.nav{display:flex;gap:6px;margin-bottom:14px}
+.nav button{flex:1;padding:8px 6px}
+.nav button.on{background:var(--ac);color:var(--ac2);border-color:var(--ac);font-weight:600}
+.gr{width:100%;height:auto;max-height:80vh;display:block;margin:0 auto}
+.gt{fill:var(--tx);font-size:11px;text-anchor:middle}
+.gl{fill:var(--mut);font-size:9px;text-anchor:middle}
+.ge{stroke:var(--mut);stroke-width:1.5}
+.gn{cursor:pointer}
+details{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px;margin-top:8px}
+summary{cursor:pointer;min-height:24px}
+.st{float:right}
+.top{flex-wrap:wrap}
+.hd{display:flex;align-items:center;gap:10px}
+.hd small{display:block;color:var(--mut);font-size:12px}
+.ic{width:20px;height:20px;flex:none;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;vertical-align:-4px}
+button .ic{margin-right:6px}
+.two{display:grid;grid-template-columns:2fr 1fr;gap:10px;align-items:start}
+@media(max-width:760px){.two{grid-template-columns:1fr}}
+.ags{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:18px}
+.ag{display:grid;justify-items:center;gap:6px;width:104px;text-align:center;font-size:12px;color:var(--mut);cursor:pointer}
+.ag .box{width:72px;height:72px;border:1.5px dashed var(--line);border-radius:50%;display:grid;place-items:center;overflow:hidden}
+.ag .ic{width:30px;height:30px;margin:0}
+.ag img{width:100%;height:100%;object-fit:contain}
+.ag input,.up input{display:none}
+.ths{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.ths img{width:96px;height:96px;object-fit:cover;border-radius:8px;border:1px solid var(--line)}
+.up{display:inline-flex;align-items:center;min-height:44px;padding:10px 12px;border:1px dashed var(--ac);border-radius:8px;cursor:pointer;margin-right:8px}
+.nav{overflow-x:auto}.nav button{white-space:nowrap;flex:1 0 auto}
+.bar{height:8px;background:var(--line);border-radius:4px}.bar i{display:block;height:100%;background:var(--ac);border-radius:4px}
+.ph{width:84px;height:84px;border-radius:50%;object-fit:cover;border:2px solid var(--ac)}
+#lg{padding:6px 10px;min-height:36px}
+body{background:radial-gradient(circle at 15% -10%,rgba(217,178,76,.10),transparent 45%),var(--bg)}
+h1,h2{font-family:Georgia,"Times New Roman",serif;letter-spacing:.01em}
+.cls{background:var(--ac);color:var(--ac2);text-align:center;font-size:11px;font-weight:700;letter-spacing:.14em;padding:5px 8px}
+.login{border-top:3px solid var(--ac)}
+.card{box-shadow:0 8px 24px rgba(0,0,0,.16)}
+.row{transition:border-color .15s,transform .15s}.row:hover{border-color:var(--ac);transform:translateY(-1px)}
+.top{padding-bottom:12px;border-bottom:1px solid var(--line)}
+.foot{max-width:1200px;margin:28px auto 16px;padding-top:12px;border-top:1px solid var(--line);text-align:center;font-size:12px;color:var(--mut)}
+@media print{:root{--bg:#fff;--panel:#fff;--tx:#000;--mut:#444;--line:#999}.nav,.top,.up,#pr,.note,.ags{display:none}}
+</style>
+</head>
+<body>
+<div class="cls">FAQAT XIZMAT FOYDALANISHI UCHUN · DEMO VERSIYA</div>
+<div id="app"></div>
+<div class="foot" id="ft"></div>
+<script>
+const USERS={admin:{pw:"admin123",role:"admin",name:"Administrator"},tergovchi:{pw:"tergov123",role:"tergovchi",name:"Tergovchi"}};
+const P=[
+{id:"TS-0001",name:"Anvar Karimov",born:"1989-03-14",h:178,city:"Toshkent",addr:"Chilonzor, 9-kvartal, 12-uy",phone:"+998 90 111 22 33",fp:"FP-A91C",veh:[{p:"01 A 123 AA",m:"Chevrolet Gentra, oq"}],marks:"Oʻng qoʻlda yara izi",cv:[{y:2012,t:"Bosqinchilik",d:"3 yil ozodlikdan mahrum"},{y:2019,t:"Firibgarlik",d:"Jarima"}]},
+{id:"TS-0002",name:"Bekzod Rahimov",born:"1992-07-02",h:176,city:"Toshkent",addr:"Yunusobod, 4-mavze, 7-uy",phone:"+998 91 222 33 44",fp:"FP-B22D",veh:[{p:"10 B 456 BB",m:"Kia K5, qora"}],marks:"Chap quloqda sirgʻa izi",cv:[{y:2015,t:"Bosqinchilik",d:"2 yil shartli"}]},
+{id:"TS-0003",name:"Dilshod Yusupov",born:"1985-11-21",h:181,city:"Samarqand",addr:"Registon koʻchasi, 18-uy",phone:"+998 93 333 44 55",fp:"FP-C33E",veh:[],marks:"Yoʻq",cv:[{y:2010,t:"Oʻgʻrilik",d:"1 yil axloq tuzatish"}]},
+{id:"TS-0004",name:"Eldor Tursunov",born:"1995-01-30",h:179,city:"Toshkent",addr:"Sergeli, 3-uy",phone:"+998 94 444 55 66",fp:"FP-D44F",veh:[{p:"01 C 789 CC",m:"Damas, oq"}],marks:"Boʻyinda tatuirovka",cv:[{y:2018,t:"Bosqinchilik",d:"4 yil ozodlikdan mahrum"},{y:2021,t:"Oʻgʻrilik",d:"Jarima"}]},
+{id:"TS-0005",name:"Farhod Ismoilov",born:"1990-05-09",h:172,city:"Namangan",addr:"Davlatobod, 21-uy",phone:"+998 95 555 66 77",fp:"FP-E55A",veh:[{p:"40 D 321 DD",m:"Nexia 3, kulrang"}],marks:"Yoʻq",cv:[]},
+{id:"TS-0006",name:"Gʻayrat Aliyev",born:"1987-09-17",h:177,city:"Toshkent",addr:"Mirzo Ulugʻbek, 15-uy",phone:"+998 97 666 77 88",fp:"FP-F66B",veh:[{p:"01 E 654 EE",m:"Spark, qizil"}],marks:"Chap qoshda chandiq",cv:[{y:2014,t:"Firibgarlik",d:"2 yil axloq tuzatish"}]},
+{id:"TS-0007",name:"Hamid Sodiqov",born:"1993-12-03",h:185,city:"Buxoro",addr:"Navoiy koʻchasi, 5-uy",phone:"+998 99 777 88 99",fp:"FP-G77C",veh:[],marks:"Yoʻq",cv:[{y:2017,t:"Bosqinchilik",d:"3 yil ozodlikdan mahrum"}]},
+{id:"TS-0008",name:"Ilyos Normatov",born:"1998-04-25",h:174,city:"Andijon",addr:"Bobur shoh koʻchasi, 30-uy",phone:"+998 88 888 99 00",fp:"FP-H88D",veh:[{p:"60 F 987 FF",m:"Lacetti, qora"}],marks:"Oʻng bilakda tatuirovka",cv:[]}
+];
+const S={user:null,sel:null,view:"list",q:"",city:"",hmin:"",hmax:"",crime:""};
+const X=[{id:"ph1",t:"Telefon",l:"+998 71 200 00 01"},{id:"ad1",t:"Manzil",l:"Chilonzor, ombor"},{id:"ac1",t:"Hisob",l:"Hisob ••4412"}];
+const E=[["TS-0001","ph1","qoʻngʻiroq"],["TS-0002","ph1","qoʻngʻiroq"],["TS-0004","ph1","qoʻngʻiroq"],["TS-0004","ad1","yashaydi"],["TS-0006","ad1","bogʻlangan"],["TS-0007","ad1","bogʻlangan"],["TS-0001","ac1","hisob egasi"],["TS-0006","ac1","pul oʻtkazma"],["TS-0002","TS-0003","sherik"]];
+const EV=[
+{id:"EV-101",item:"Telefon Samsung A54",c:"2026/114",p:"TS-0001",loc:"Dalillar xonasi, 2-javon",st:"Saqlanmoqda",log:[["2026-09-02 10:15","Tergovchi A. Sodiqov","Voqea joyidan olindi"],["2026-09-02 14:40","Tergovchi A. Sodiqov","Omborga topshirildi"]]},
+{id:"EV-102",item:"Pichoq (qadoqlangan)",c:"2026/114",p:"TS-0004",loc:"Ekspertiza markazi",st:"Ekspertizada",log:[["2026-09-02 11:00","Tergovchi A. Sodiqov","Voqea joyidan olindi"],["2026-09-05 09:30","Ekspert M. Rustamov","Ekspertizaga qabul qilindi"]]},
+{id:"EV-103",item:"Naqd pul, 12 500 000 soʻm",c:"2026/121",p:"TS-0006",loc:"Bank saqlovi",st:"Saqlanmoqda",log:[["2026-09-12 16:20","Tergovchi D. Aliyev","Hisoblandi va dalolatnoma tuzildi"]]},
+{id:"EV-104",item:"Noutbuk Lenovo",c:"2026/130",p:"TS-0002",loc:"Sudga yuborilgan",st:"Sudda",log:[["2026-09-20 12:00","Tergovchi D. Aliyev","Olindi"],["2026-10-01 10:00","Kotib N. Azizova","Sudga topshirildi"]]},
+{id:"EV-105",item:"Avtomobil kaliti",c:"2026/130",p:"TS-0007",loc:"Egasiga qaytarilgan",st:"Qaytarilgan",log:[["2026-09-20 12:10","Tergovchi D. Aliyev","Olindi"],["2026-10-10 15:45","Tergovchi D. Aliyev","Egasiga qaytarildi"]]}
+];
+const $=s=>document.querySelector(s);
+const col=n=>"hsl("+([...n].reduce((a,c)=>a+c.charCodeAt(0),0)*37%360)+" 55% 68%)";
+const ini=n=>n.split(" ").map(w=>w[0]).join("");
+const age=b=>isNaN(new Date(b))?"?":Math.floor((Date.now()-new Date(b))/31557600000);
+const app=$("#app");
+const ic=d=>`<svg class="ic" viewBox="0 0 24 24" aria-hidden="true">${d}</svg>`;
+const IC={list:ic(`<circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.5 2.7-6 6-6s6 2.5 6 6M16 5.5a3 3 0 0 1 0 5.5M18 14.5c2 .7 3 2.5 3 5.5"/>`),graph:ic(`<circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="8" r="2.5"/><circle cx="12" cy="18" r="2.5"/><path d="M8 7l8 .8M7.5 8l3.5 8M16.5 10l-3.5 6"/>`),evidence:ic(`<path d="M3 8l9-5 9 5v9l-9 5-9-5zM3 8l9 5 9-5M12 13v9"/>`),up:ic(`<path d="M12 16V4M7 9l5-5 5 5M4 20h16"/>`),out:ic(`<path d="M10 4H5v16h5M15 8l4 4-4 4M19 12H9"/>`),shield:ic(`<path d="M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6z"/>`),back:ic(`<path d="M15 5l-7 7 7 7"/>`),dash:ic(`<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>`),audit:ic(`<path d="M6 3h9l4 4v14H6zM14 3v5h5M9 13h7M9 17h7"/>`)};
+const LOGO=s=>`<svg width="${s}" height="${s}" viewBox="0 0 64 64" aria-label="Turkiston Shield"><path d="M32 4l22 8v16c0 14-9 25-22 32C19 53 10 42 10 28V12z" style="fill:var(--ac2);stroke:var(--ac);stroke-width:3"/><path d="M32 10l16 6v12c0 10-6 18-16 24-10-6-16-14-16-24V16z" style="fill:none;stroke:var(--ac);stroke-width:1;opacity:.6"/><path d="M22 28h20M32 28v18" style="stroke:var(--ac);stroke-width:5;stroke-linecap:round"/><path d="M32 13l1.8 3.6 4 .6-2.9 2.8.7 4-3.6-1.9-3.6 1.9.7-4-2.9-2.8 4-.6z" style="fill:var(--ac)"/></svg>`;
+function readImg(f,cb,raw){const r=new FileReader();r.onload=()=>{if(raw)return cb(r.result);const im=new Image();im.onload=()=>{const k=Math.min(1,900/Math.max(im.width,im.height)),c=document.createElement("canvas");c.width=im.width*k;c.height=im.height*k;c.getContext("2d").drawImage(im,0,0,c.width,c.height);cb(c.toDataURL("image/jpeg",.8));};im.src=r.result;};r.readAsDataURL(f);}
+const AG={},AGN=[["iiv","Ichki ishlar agentligi"],["sx","Xavfsizlik xizmati"],["pl","Politsiya"],["jb","Jinoyat boʻlimi"]];
+const agRow=()=>`<div class="ags">${AGN.map(a=>`<label class="ag"><span class="box">${AG[a[0]]?`<img src="${AG[a[0]]}" alt="${a[1]}">`:IC.shield}</span>${a[1]}<input type="file" accept="image/*" data-ag="${a[0]}"></label>`).join("")}</div><div class="note" style="text-align:center">Rasmiy logoni yuklash uchun doirani bosing.</div>`;
+function agBind(re,root){(root||$("#app")).querySelectorAll("[data-ag]").forEach(i=>i.onchange=()=>{const f=i.files[0];if(f)readImg(f,u=>{AG[i.dataset.ag]=u;foot();re();},1);});}
+
+function login(msg){
+  app.innerHTML=`<div class="card login"><div style="text-align:center">${LOGO(84)}<h1>Turkiston Shield</h1><div class="mut" style="letter-spacing:.08em;font-size:13px">MILLIY RAQAMLI TAHLIL PLATFORMASI</div><div class="mut">Demo versiya. Barcha ma’lumotlar uydirma.</div></div>
+  <input id="u" placeholder="Login" autocomplete="off"><input id="p" type="password" placeholder="Parol">
+  <div class="err" id="e">${msg||""}</div><button class="pri" id="go">Kirish</button>
+  <div class="note">Sinash uchun: <b>admin</b> / admin123 yoki <b>tergovchi</b> / tergov123</div></div>`;
+  const go=()=>{const u=USERS[$("#u").value.trim()];
+    if(u&&u.pw===$("#p").value){S.user=u;aud("Tizimga kirdi");list();}else login("Login yoki parol notoʻgʻri.");};
+  $("#go").onclick=go;$("#p").onkeydown=e=>{if(e.key==="Enter")go();};
+}
+
+function bar(extra){
+  return `<div class="top"><div class="hd">${LOGO(36)}<div><h2>Turkiston Shield</h2><small>Turkiston Tech</small></div></div><div>${extra||""}<span class="badge">${S.user.name}</span> <button id="lg">${L.toUpperCase()}</button> <button id="out">${IC.out}${tr("out")}</button></div></div><div class="nav">${["list","graph","evidence","dash","audit"].map(k=>[k,tr(k)]).map(v=>`<button data-v="${v[0]}" class="${S.view===v[0]?"on":""}">${IC[v[0]]}${v[1]}</button>`).join("")}</div>`;
+}
+function bindOut(){$("#out").onclick=()=>{aud("Chiqdi");S.user=null;S.sel=null;login();};const M={list,graph,evidence,dash,audit};$("#lg").onclick=()=>{L={uz:"ru",ru:"en",en:"uz"}[L];(M[S.view]||list)();};document.querySelectorAll(".nav button").forEach(b=>b.onclick=()=>M[b.dataset.v]());}
+
+function filtered(){
+  const q=S.q.toLowerCase(),t=nl(S.q),city=S.city||t.city,crime=S.crime||t.crime,mn=S.hmin||t.min,mx=S.hmax||t.max;
+  return P.filter(p=>
+    (t.hit||!q||[p.name,p.id,p.phone,p.city,...p.veh.map(v=>v.p)].join(" ").toLowerCase().includes(q))&&
+    (!city||p.city===city)&&
+    (!mn||p.h>=+mn)&&(!mx||p.h<=+mx)&&
+    (!crime||(crime==="none"?!p.cv.length:p.cv.some(c=>c.t===crime))));
+}
+
+function list(){S.view="list";
+  S.sel=null;
+  const cities=[...new Set(P.map(p=>p.city))].sort();
+  const crimes=[...new Set(P.flatMap(p=>p.cv.map(c=>c.t)))].sort();
+  app.innerHTML=bar(`<button id="add" class="pri">${IC.up}Shaxs qoʻshish</button> `)+`<div class="card"><div class="filters">
+  <input class="q" id="q" placeholder="Ism, ID, telefon yoki gap: Toshkent, 175-180, bosqinchilik" value="${S.q}">
+  <select id="city"><option value="">Barcha shaharlar</option>${cities.map(c=>`<option ${S.city===c?"selected":""}>${c}</option>`).join("")}</select>
+  <select id="crime"><option value="">Sudlanganlik: hammasi</option>${crimes.map(c=>`<option ${S.crime===c?"selected":""}>${c}</option>`).join("")}<option value="none" ${S.crime==="none"?"selected":""}>Sudlanmagan</option></select>
+  <input id="hmin" type="number" placeholder="Boʻy dan (sm)" value="${S.hmin}"><input id="hmax" type="number" placeholder="Boʻy gacha (sm)" value="${S.hmax}">
+  </div><div class="mut" id="cnt"></div></div><div class="list" id="res"></div>
+  <div class="note">Misol: Boʻy 175–180, shahar Toshkent, sudlanganlik Bosqinchilik.</div>`;$("#add").onclick=addp;
+  bindOut();
+  const run=()=>{
+    S.q=$("#q").value;S.city=$("#city").value;S.crime=$("#crime").value;S.hmin=$("#hmin").value;S.hmax=$("#hmax").value;
+    const t=performance.now(),r=filtered(),ms=(performance.now()-t).toFixed(1);
+    $("#cnt").textContent=`${r.length} ta natija · ${ms} ms`;
+    $("#res").innerHTML=r.length?r.map(p=>`<button class="card row" data-id="${p.id}"><span class="av" style="background:${col(p.name)}">${ini(p.name)}</span>
+      <span style="flex:1"><b>${p.name}</b><br><span class="mut">${p.id} · ${p.city} · ${p.h} sm · ${p.cv.length?p.cv.length+" ta sudlanganlik":"sudlanmagan"}</span></span></button>`).join("")
+      :`<div class="card mut">Hech narsa topilmadi. Filtrlarni kamaytirib koʻring.</div>`;
+    document.querySelectorAll(".row").forEach(b=>b.onclick=()=>dossier(b.dataset.id));
+  };
+  ["q","city","crime","hmin","hmax"].forEach(i=>$("#"+i).oninput=run);
+  run();
+}
+
+function dossier(id){S.view="list";aud("Dosye ochildi: "+id);
+  const p=P.find(x=>x.id===id),adm=S.user.role==="admin";
+  const hid=`<span class="hide">Yashirilgan (faqat admin)</span>`;
+  app.innerHTML=bar(`<button id="back">${IC.back}Orqaga</button> `)+`<div class="card big" style="display:flex;gap:16px;align-items:center">
+  ${p.img?`<img class="ph" src="${p.img}" alt="${p.name}">`:`<span class="av" style="background:${col(p.name)}">${ini(p.name)}</span>`}<div><h1>${p.name}</h1><div class="mut">${p.id} · ${age(p.born)} yosh</div><div style="margin-top:8px"><label class="up">${IC.up}Surat<input type="file" accept="image/*" data-ph="1"></label><button id="pr">${IC.audit}PDF</button></div></div></div>
+  <div class="grid">
+  <div class="card"><h3>Shaxsiy maʼlumot</h3><dl><dt>Tugʻilgan</dt><dd>${p.born}</dd><dt>Boʻy</dt><dd>${p.h} sm</dd><dt>Shahar</dt><dd>${p.city}</dd>
+  <dt>Manzil</dt><dd>${p.addr}</dd><dt>Telefon</dt><dd>${adm?p.phone:hid}</dd><dt>Barmoq izi</dt><dd>${adm?p.fp:hid}</dd><dt>Alomatlar</dt><dd>${p.marks}</dd></dl></div>
+  <div class="card"><h3>Sudlanganlik tarixi</h3>${p.cv.length?p.cv.map(c=>`<dl><dt>${c.y}</dt><dd><span class="tag">${c.t}</span> ${c.d}</dd></dl>`).join(""):`<p class="mut">Sudlanmagan.</p>`}</div>
+  <div class="card"><h3>Transport vositalari</h3>${p.veh.length?p.veh.map(v=>`<dl><dt>${v.p}</dt><dd>${v.m}</dd></dl>`).join(""):`<p class="mut">Roʻyxatda yoʻq.</p>`}</div>
+  </div><div class="note">Rol: ${S.user.role}. Tergovchi roli telefon va barmoq izini koʻrmaydi (RBAC namunasi).</div>`;
+  bindOut();$("#back").onclick=list;document.querySelector("[data-ph]").onchange=e=>{const f=e.target.files[0];if(f)readImg(f,u=>{p.img=u;aud("Surat yuklandi: "+p.id);dossier(id);});};$("#pr").onclick=()=>{aud("PDF/chop etish: "+p.id);window.print();};
+}
+const nm=id=>{const p=P.find(x=>x.id===id);return p?p.name:X.find(x=>x.id===id).l;};
+
+function graph(foc){
+  S.view="graph";
+  const pos={};
+  P.forEach((p,i)=>{const a=i/P.length*6.283-1.57;pos[p.id]=[200+150*Math.cos(a),200+150*Math.sin(a)];});
+  X.forEach((x,i)=>{const a=i/X.length*6.283-.5;pos[x.id]=[200+55*Math.cos(a),200+55*Math.sin(a)];});
+  const near=new Set([foc]);
+  E.forEach(e=>{if(e[0]===foc||e[1]===foc){near.add(e[0]);near.add(e[1]);}});
+  const hit=e=>!foc||e[0]===foc||e[1]===foc;
+  const lines=E.map(e=>{const a=pos[e[0]],b=pos[e[1]];return `<line class="ge" x1="${a[0]}" y1="${a[1]}" x2="${b[0]}" y2="${b[1]}" opacity="${hit(e)?(foc?1:.55):.1}"/>`+(foc&&hit(e)?`<text class="gl" x="${(a[0]+b[0])/2}" y="${(a[1]+b[1])/2-3}">${e[2]}</text>`:"");}).join("");
+  const nodes=[...P,...X].map(n=>{const c=pos[n.id],p=!!n.name,dim=foc&&!near.has(n.id);
+    return `<g class="gn" data-id="${n.id}" opacity="${dim?.25:1}"><circle cx="${c[0]}" cy="${c[1]}" r="${p?16:11}" style="fill:${p?col(n.name):"var(--panel)"};stroke:var(--ac);stroke-width:${n.id===foc?4:1.5}"/><text class="gt" x="${c[0]}" y="${c[1]+(p?30:24)}">${p?n.name.split(" ")[0]:n.l}</text></g>`;}).join("");
+  const info=foc?E.filter(hit).map(e=>`<dl><dt>${e[2]}</dt><dd>${nm(e[0])} ↔ ${nm(e[1])}</dd></dl>`).join("")+(P.find(p=>p.id===foc)?`<button class="pri" id="od" style="margin-top:10px">Dosyeni ochish</button>`:""):`<span class="mut">Tugunni bosing: aloqalari ajralib koʻrinadi.</span>`;
+  app.innerHTML=bar()+`<div class="two"><div class="card"><h3>Aloqalar xaritasi</h3><svg class="gr" viewBox="0 0 400 400">${lines}${nodes}</svg></div><div class="card">${info}</div></div><div class="note">Uydirma maʼlumot. Katta doira: shaxs. Kichik doira: telefon, manzil, hisob.</div>`;
+  bindOut();
+  document.querySelectorAll(".gn").forEach(g=>g.onclick=()=>graph(g.dataset.id===foc?null:g.dataset.id));
+  const od=$("#od");if(od)od.onclick=()=>dossier(foc);
+}
+
+function evidence(openId){
+  S.view="evidence";
+  app.innerHTML=bar()+`<div class="card"><h3>Ashyoviy dalillar</h3><div class="mut">${EV.length} ta dalil. Har birining harakat zanjiri saqlanadi.</div></div><div class="list">`+EV.map(e=>`<details ${e.id===openId?"open":""}><summary><b>${e.item}</b> <span class="tag st">${e.st}</span><br><span class="mut">${e.id} · ish ${e.c} · ${nm(e.p)}</span></summary><dl><dt>Joylashuv</dt><dd>${e.loc}</dd></dl><h3 style="margin-top:12px">Rasmlar</h3><div class="ths">${(e.img||[]).map(u=>`<img src="${u}" alt="${e.item}">`).join("")||`<span class="mut">Rasm yoʻq.</span>`}</div><label class="up">${IC.up}Rasm yuklash<input type="file" accept="image/*" multiple data-up="${e.id}"></label><h3 style="margin-top:12px">Harakatlar tarixi</h3>${e.log.map(l=>`<dl><dt>${l[0]}</dt><dd>${l[2]} <span class="mut">(${l[1]})</span></dd></dl>`).join("")}<button data-ev="${e.id}" style="margin-top:10px">Tekshiruv belgisini qoʻshish</button></details>`).join("")+`</div><div class="note">Yozuvlar oʻchirilmaydi, faqat qoʻshiladi (namuna).</div>`;
+  bindOut();
+  document.querySelectorAll("[data-ev]").forEach(b=>b.onclick=()=>{aud("Dalil tekshirildi: "+b.dataset.ev);EV.find(e=>e.id===b.dataset.ev).log.push([new Date().toISOString().slice(0,16).replace("T"," "),S.user.name,"Saqlanishi tekshirildi"]);evidence(b.dataset.ev);});
+  document.querySelectorAll("[data-up]").forEach(i=>i.onchange=()=>{const e=EV.find(x=>x.id===i.dataset.up);aud("Dalilga rasm yuklandi: "+i.dataset.up);let n=i.files.length;[...i.files].forEach(f=>readImg(f,u=>{(e.img=e.img||[]).push(u);e.log.push([new Date().toISOString().slice(0,16).replace("T"," "),S.user.name,"Rasm qoʻshildi"]);if(--n===0)evidence(e.id);}));});
+}
+const LOG=[];let L="uz";
+const T={uz:{list:"Shaxslar",graph:"Aloqalar",evidence:"Dalillar",dash:"Statistika",audit:"Jurnal",out:"Chiqish"},ru:{list:"Лица",graph:"Связи",evidence:"Улики",dash:"Статистика",audit:"Журнал",out:"Выход"},en:{list:"People",graph:"Links",evidence:"Evidence",dash:"Stats",audit:"Audit",out:"Log out"}};
+const tr=k=>T[L][k];
+function aud(a){LOG.push([new Date().toISOString().slice(0,19).replace("T"," "),S.user?S.user.name:"?",a]);}
+function nl(s){s=s.toLowerCase();const o={hit:0},m=s.match(/(\d{3})\s*[-–]\s*(\d{3})/);if(m){o.min=+m[1];o.max=+m[2];o.hit=1;}
+ P.forEach(p=>{if(s.includes(p.city.toLowerCase().slice(0,5))){o.city=p.city;o.hit=1;}});
+ [["bosqin","Bosqinchilik"],["firib","Firibgarlik"],["rilik","Oʻgʻrilik"]].forEach(k=>{if(s.includes(k[0])){o.crime=k[1];o.hit=1;}});
+ if(s.includes("sudlanmagan")){o.crime="none";o.hit=1;}
+ return o;}
+function bars(o){const m=Math.max(...Object.values(o),1);return Object.entries(o).map(([k,v])=>`<div style="margin:6px 0"><div style="display:flex;justify-content:space-between"><span>${k}</span><b>${v}</b></div><div class="bar"><i style="width:${v/m*100}%"></i></div></div>`).join("");}
+function dash(){
+  S.view="dash";
+  const byC={},byT={};
+  P.forEach(p=>{byC[p.city]=(byC[p.city]||0)+1;p.cv.forEach(c=>byT[c.t]=(byT[c.t]||0)+1);});
+  const geo={Toshkent:[69.2,41.3],Samarqand:[66.96,39.65],Buxoro:[64.4,39.77],Namangan:[71.67,41],Andijon:[72.34,40.78]};
+  const dots=Object.entries(byC).filter(([c])=>geo[c]).map(([c,n])=>{const g=geo[c],x=(g[0]-56)/17*380+10,y=(46-g[1])/9*200+10;return `<circle cx="${x}" cy="${y}" r="${6+n*3}" style="fill:var(--ac);opacity:.7"/><text class="gt" x="${x}" y="${y+22+n*3}">${c} (${n})</text>`;}).join("");
+  const conv=P.filter(p=>p.cv.length).length;
+  app.innerHTML=bar()+`<div class="grid" style="margin-top:0"><div class="card"><h2>${P.length}</h2><span class="mut">Shaxslar</span></div><div class="card"><h2>${conv}</h2><span class="mut">Sudlanganlar</span></div><div class="card"><h2>${EV.length}</h2><span class="mut">Dalillar</span></div><div class="card"><h2>${E.length}</h2><span class="mut">Aniqlangan aloqalar</span></div></div><div class="grid"><div class="card"><h3>Shahar boʻyicha</h3>${bars(byC)}</div><div class="card"><h3>Jinoyat turi boʻyicha</h3>${bars(byT)}</div></div><div class="card" style="margin-top:12px"><h3>Hududlar sxemasi</h3><svg class="gr" viewBox="0 0 400 220">${dots}</svg></div><div class="note">Sxema: aniq xarita emas, shaharlarning taxminiy joylashuvi.</div>`;
+  bindOut();
+}
+function audit(){
+  S.view="audit";
+  app.innerHTML=bar()+(S.user.role!=="admin"?`<div class="card mut">Jurnalni faqat admin koʻra oladi (RBAC).</div>`:`<div class="card"><h3>Audit jurnali</h3><div class="mut">${LOG.length} ta yozuv</div>${LOG.slice().reverse().map(l=>`<dl><dt>${l[0]}</dt><dd><b>${l[1]}</b> · ${l[2]}</dd></dl>`).join("")}</div>`);
+  bindOut();
+}
+function foot(){const f=$("#ft");f.innerHTML=`<div style="display:flex;gap:28px;justify-content:center;align-items:center;flex-wrap:wrap"><span style="display:inline-flex;align-items:center;gap:10px">${LOGO(44)}<span style="font-family:Georgia,serif;font-size:16px;color:var(--tx)">Turkiston Shield</span></span><label class="ag" style="display:inline-flex;flex-direction:row;width:auto;gap:10px;align-items:center;text-align:left"><span class="box" style="width:44px;height:44px">${AG.iiv?`<img src="${AG.iiv}" alt="Ichki ishlar agentligi">`:IC.shield}</span><span>Ichki ishlar agentligi${AG.iiv?"":" (logo yuklash)"}</span><input type="file" accept="image/*" data-ag="iiv"></label></div><div style="margin-top:8px">© 2026 Turkiston Tech · Turkiston Shield · Demo v0.4</div>`;agBind(()=>{},f);}
+function addp(){
+  S.view="list";
+  const f=(id,l,t)=>`<label class="mut">${l}<input id="${id}" ${t||""} style="width:100%;margin-top:4px"></label>`;
+  app.innerHTML=bar(`<button id="back">${IC.back}Orqaga</button> `)+`<div class="card"><h3>Yangi shaxs qoʻshish</h3><div class="mut">Demo: ma’lumot faqat sahifa ochiq turganda saqlanadi.</div><div class="grid">${f("n","Ism-familiya")}${f("b","Tugʻilgan sana",'type="date"')}${f("h","Boʻy (sm)",'type="number"')}${f("c","Shahar")}${f("a","Manzil")}${f("ph","Telefon")}${f("m","Alomatlar")}${f("pl","Transport raqami")}${f("vm","Transport rusumi")}<label class="mut">Sudlanganlik turi<select id="ct" style="width:100%;margin-top:4px"><option value="">Sudlanmagan</option><option>Bosqinchilik</option><option>Firibgarlik</option><option>Oʻgʻrilik</option><option>Boshqa</option></select></label>${f("cy","Sud yili",'type="number"')}${f("cd","Qisqa tavsif")}</div><div class="err" id="e"></div><button class="pri" id="sv">${IC.up}Saqlash</button></div>`;
+  bindOut();$("#back").onclick=list;
+  $("#sv").onclick=()=>{const v=k=>$("#"+k).value.trim();
+    if(!v("n")||!v("h")){$("#e").textContent="Ism va boʻy majburiy.";return;}
+    const id="TS-"+String(P.length+1).padStart(4,"0"),ct=v("ct");
+    P.push({id,name:v("n"),born:v("b")||"—",h:+v("h"),city:v("c")||"—",addr:v("a")||"—",phone:v("ph")||"—",fp:"FP-NEW",veh:v("pl")?[{p:v("pl"),m:v("vm")||"—"}]:[],marks:v("m")||"Yoʻq",cv:ct?[{y:v("cy")||"—",t:ct,d:v("cd")||"—"}]:[]});
+    aud("Shaxs qoʻshildi: "+id);dossier(id);};
+}
+foot();login();
+</script>
+</body>
+</html>
