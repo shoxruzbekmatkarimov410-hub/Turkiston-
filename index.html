@@ -131,17 +131,17 @@ function agBind(re,root){(root||$("#app")).querySelectorAll("[data-ag]").forEach
 function login(msg){
   app.innerHTML=`<div class="card login"><div style="text-align:center">${LOGO(84)}<h1>Turkiston Shield</h1><div class="mut" style="letter-spacing:.08em;font-size:13px">MILLIY RAQAMLI TAHLIL PLATFORMASI</div><div class="mut">Demo versiya. Barcha ma’lumotlar uydirma.</div></div>
   <input id="u" placeholder="Login" autocomplete="off"><input id="p" type="password" placeholder="Parol">
-  <div class="err" id="e">${msg||""}</div><button class="pri" id="go">Kirish</button><button id="gst">Mehmon sifatida kirish</button><button id="rg">Roʻyxatdan oʻtish</button>
-  <div class="note">Sinash uchun: <b>admin</b> / admin123 yoki <b>tergovchi</b> / tergov123</div></div>`;
+  <div class="err" id="e">${msg||""}</div><button class="pri" id="go">Kirish</button><button id="gst">Mehmon sifatida davom etish</button><button id="rg">Roʻyxatdan oʻtish (fuqaro)</button><button id="ar">Xodim hisobi uchun ariza</button>
+  <div class="note">Xodimlar uchun hisob tasdiqlash va toʻlovdan keyin beriladi.</div></div>`;
   const go=()=>{const u=USERS[$("#u").value.trim()];
     if(u&&u.pw===$("#p").value){S.user=u;aud("Tizimga kirdi");(u.role==="admin"||u.role==="tergovchi"?list:()=>civ(u.role==="mehmon"?"guide":"check"))();}else login("Login yoki parol notoʻgʻri.");};
-  $("#go").onclick=go;$("#gst").onclick=()=>{S.user=USERS.mehmon;aud("Mehmon kirdi");civ("guide");};$("#rg").onclick=()=>reg();$("#p").onkeydown=e=>{if(e.key==="Enter")go();};
+  $("#go").onclick=go;$("#gst").onclick=()=>{S.user=USERS.mehmon;aud("Mehmon kirdi");civ("guide");};$("#rg").onclick=()=>reg();$("#ar").onclick=()=>acc();$("#p").onkeydown=e=>{if(e.key==="Enter")go();};
 }
 
 function bar(extra){
-  return `<div class="top"><div class="hd">${LOGO(36)}<div><h2>Turkiston Shield</h2><small>Turkiston Tech</small></div></div><div>${extra||""}<span class="badge">${S.user.name}</span> <button id="lg">${L.toUpperCase()}</button> <button id="out">${IC.out}${tr("out")}</button></div></div><div class="nav">${(S.user.role==="admin"||S.user.role==="tergovchi"?["list","graph","evidence","dash","audit","civ"]:["civ"]).map(k=>[k,tr(k)]).map(v=>`<button data-v="${v[0]}" class="${S.view===v[0]?"on":""}">${IC[v[0]]}${v[1]}</button>`).join("")}</div>`;
+  return `<div class="top"><div class="hd">${LOGO(36)}<div><h2>Turkiston Shield</h2><small>Turkiston Tech</small></div></div><div>${extra||""}<span class="badge">${S.user.name}</span> <button id="lg">${L.toUpperCase()}</button> <button id="out">${IC.out}${S.user.role==="mehmon"?"Kirish":tr("out")}</button></div></div><div class="nav">${(S.user.role==="admin"?["list","graph","evidence","dash","audit","adm","civ"]:S.user.role==="tergovchi"?["list","graph","evidence","dash","audit","civ"]:["civ"]).map(k=>[k,tr(k)]).map(v=>`<button data-v="${v[0]}" class="${S.view===v[0]?"on":""}">${IC[v[0]]}${v[1]}</button>`).join("")}</div>`;
 }
-function bindOut(){$("#out").onclick=()=>{aud("Chiqdi");S.user=null;S.sel=null;login();};const M={list,graph,evidence,dash,audit,civ};$("#lg").onclick=()=>{L={uz:"ru",ru:"en",en:"uz"}[L];(M[S.view]||list)();};document.querySelectorAll(".nav button").forEach(b=>b.onclick=()=>M[b.dataset.v]());}
+function bindOut(){$("#out").onclick=()=>{aud("Chiqdi");S.user=null;S.sel=null;login();};const M={list,graph,evidence,dash,audit,adm,civ};$("#lg").onclick=()=>{L={uz:"ru",ru:"en",en:"uz"}[L];(M[S.view]||list)();};document.querySelectorAll(".nav button").forEach(b=>b.onclick=()=>M[b.dataset.v]());}
 
 function filtered(){
   const q=S.q.toLowerCase(),t=nl(S.q),city=S.city||t.city,crime=S.crime||t.crime,mn=S.hmin||t.min,mx=S.hmax||t.max;
@@ -218,7 +218,7 @@ function evidence(openId){
   document.querySelectorAll("[data-up]").forEach(i=>i.onchange=()=>{const e=EV.find(x=>x.id===i.dataset.up);aud("Dalilga rasm yuklandi: "+i.dataset.up);let n=i.files.length;[...i.files].forEach(f=>readImg(f,u=>{(e.img=e.img||[]).push(u);e.log.push([new Date().toISOString().slice(0,16).replace("T"," "),S.user.name,"Rasm qoʻshildi"]);if(--n===0)evidence(e.id);}));});
 }
 const LOG=[];let L="uz";
-const T={uz:{list:"Shaxslar",graph:"Aloqalar",evidence:"Dalillar",dash:"Statistika",audit:"Jurnal",civ:"Himoya",out:"Chiqish"},ru:{list:"Лица",graph:"Связи",evidence:"Улики",dash:"Статистика",audit:"Журнал",civ:"Защита",out:"Выход"},en:{list:"People",graph:"Links",evidence:"Evidence",dash:"Stats",audit:"Audit",civ:"Safety",out:"Log out"}};
+const T={uz:{list:"Shaxslar",graph:"Aloqalar",evidence:"Dalillar",dash:"Statistika",audit:"Jurnal",civ:"Himoya",adm:"Arizalar",out:"Chiqish"},ru:{list:"Лица",graph:"Связи",evidence:"Улики",dash:"Статистика",audit:"Журнал",civ:"Защита",adm:"Заявки",out:"Выход"},en:{list:"People",graph:"Links",evidence:"Evidence",dash:"Stats",audit:"Audit",civ:"Safety",adm:"Requests",out:"Log out"}};
 const tr=k=>T[L][k];
 function aud(a){LOG.push([new Date().toISOString().slice(0,19).replace("T"," "),S.user?S.user.name:"?",a]);}
 function nl(s){s=s.toLowerCase();const o={hit:0},m=s.match(/(\d{3})\s*[-–]\s*(\d{3})/);if(m){o.min=+m[1];o.max=+m[2];o.hit=1;}
@@ -242,7 +242,7 @@ function audit(){
   app.innerHTML=bar()+(S.user.role!=="admin"?`<div class="card mut">Jurnalni faqat admin koʻra oladi (RBAC).</div>`:`<div class="card"><h3>Audit jurnali</h3><div class="mut">${LOG.length} ta yozuv</div>${LOG.slice().reverse().map(l=>`<dl><dt>${l[0]}</dt><dd><b>${l[1]}</b> · ${l[2]}</dd></dl>`).join("")}</div>`);
   bindOut();
 }
-function foot(){const f=$("#ft");f.innerHTML=`<div style="display:flex;gap:28px;justify-content:center;align-items:center;flex-wrap:wrap"><span style="display:inline-flex;align-items:center;gap:10px">${LOGO(44)}<span style="font-family:Georgia,serif;font-size:16px;color:var(--tx)">Turkiston Shield</span></span><label class="ag" style="display:inline-flex;flex-direction:row;width:auto;gap:10px;align-items:center;text-align:left"><span class="box" style="width:44px;height:44px">${AG.iiv?`<img src="${AG.iiv}" alt="Ichki ishlar agentligi">`:IC.shield}</span><span>Ichki ishlar agentligi${AG.iiv?"":" (logo yuklash)"}</span><input type="file" accept="image/*" data-ag="iiv"></label></div><div style="margin-top:8px">© 2026 Turkiston Tech · Turkiston Shield · Demo v0.6</div>`;agBind(()=>{},f);}
+function foot(){const f=$("#ft");f.innerHTML=`<div style="display:flex;gap:28px;justify-content:center;align-items:center;flex-wrap:wrap"><span style="display:inline-flex;align-items:center;gap:10px">${LOGO(44)}<span style="font-family:Georgia,serif;font-size:16px;color:var(--tx)">Turkiston Shield</span></span><label class="ag" style="display:inline-flex;flex-direction:row;width:auto;gap:10px;align-items:center;text-align:left"><span class="box" style="width:44px;height:44px">${AG.iiv?`<img src="${AG.iiv}" alt="Ichki ishlar agentligi">`:IC.shield}</span><span>Ichki ishlar agentligi${AG.iiv?"":" (logo yuklash)"}</span><input type="file" accept="image/*" data-ag="iiv"></label></div><div style="margin-top:8px">© 2026 Turkiston Tech · Turkiston Shield · Demo v0.7</div>`;agBind(()=>{},f);}
 function addp(){
   S.view="list";
   const f=(id,l,t)=>`<label class="mut">${l}<input id="${id}" ${t||""} style="width:100%;margin-top:4px"></label>`;
@@ -313,7 +313,7 @@ function bCheck(){
     $("#out").innerHTML=`<div class="c res" style="border-left-color:var(--${L[1]})"><h3 style="color:var(--${L[1]})">${L[0]}</h3>${r.R.length?`<ul>${r.R.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`:`<p>Aniq xavf belgisi topilmadi.</p>`}<p class="m">Tekshirilgan: ${tm}. Bu faqat belgilarga asoslangan ogohlantirish, xavfsizlik kafolati emas. Shubhangiz bo\u02bblsa, havolani ochmang va xabar bering. Natija noto\u02bbg\u02bbri bo\u02bblsa, pastdagi tarixdan e\u02bctiroz bildiring.</p></div>`;
     $("#hl").innerHTML=histHtml();dp();};
 }
-function vPriv(){return `<div class="c"><h3>Maxfiylik va ma\u02bclumotlar</h3><ul><li>Parol va karta ma\u02bclumotlari yig\u02bbilmaydi.</li><li>Xabar berishda ism ko\u02bbrsatish ixtiyoriy.</li><li>Skrinshotdagi telefon, manzil va ismni yashiring.</li><li>Tekshirilmagan xabar ommaga chiqmaydi.</li><li>Saqlash muddati tugagach ma\u02bclumot o\u02bbchiriladi (muddat haqiqiy tizimda belgilanadi).</li><li>Istalgan vaqtda ma\u02bclumotlaringizni o\u02bbchirishni so\u02bbrashingiz mumkin.</li><li>Xavfsizlik hodisasi bo\u02bblsa, foydalanuvchilarga xabar beriladi.</li></ul><button id="wipe">Mening ma\u02bclumotlarimni o\u02bbchirish</button><p id="wm" class="m"></p></div>`;}
+function vPriv(){return `<div class="c"><h3>Maxfiylik va ma\u02bclumotlar</h3><ul><li>Parol va karta ma\u02bclumotlari yig\u02bbilmaydi.</li><li>Xabar berishda ism ko\u02bbrsatish ixtiyoriy.</li><li>Skrinshotdagi telefon, manzil va ismni yashiring.</li><li>Tekshirilmagan xabar ommaga chiqmaydi.</li><li>Saqlash muddati tugagach ma\u02bclumot o\u02bbchiriladi (muddat haqiqiy tizimda belgilanadi).</li><li>Istalgan vaqtda ma\u02bclumotlaringizni o\u02bbchirishni so\u02bbrashingiz mumkin.</li><li>Xavfsizlik hodisasi bo\u02bblsa, foydalanuvchilarga xabar beriladi.</li></ul><h3 style="margin-top:14px">Bizda boʻlmaydi</h3><ul><li>Foydalanuvchi telefonini yashirin kuzatish</li><li>Xabar va qoʻngʻiroqlarni roziliksiz oʻqish</li><li>Boshqa tizimlarga ruxsatsiz kirish</li><li>Odamlarni avtomatik “xavfli” deb belgilash</li><li>Tekshirilmagan shikoyatlarni ommaga chiqarish</li></ul><button id="wipe">Mening ma\u02bclumotlarimni o\u02bbchirish</button><p id="wm" class="m"></p></div>`;}
 function bPriv(){$("#wipe").onclick=()=>{HIST=[];RP=[];aud("Foydalanuvchi ma\u02bclumotlarini o\u02bbchirdi");$("#wm").textContent="Tekshiruv tarixi va xabarlaringiz o\u02bbchirildi (demo).";};}
 function vContact(){const adm=S.user.role==="admin";return `<div class="c"><h3>Aloqa va fikr-mulohaza</h3><label>Ism (ixtiyoriy)<input id="fn"></label><label>Telegram yoki pochta (ixtiyoriy)<input id="fc"></label><label>Fikringiz<textarea id="fm"></textarea></label><div id="fe" style="color:var(--bd);min-height:1.4em"></div><button class="p" id="fs">Yuborish</button></div>${adm?`<div class="c"><h3>Kelgan fikrlar (${FB.length})</h3>${FB.length?FB.map(f=>`<div style="border-top:1px solid var(--l);padding:8px 0"><b>${esc(f.n||"Anonim")}</b> <span class="m">${esc(f.c)}</span><div>${esc(f.m)}</div></div>`).join(""):`<p class="m">Hali yo\u02bbq.</p>`}</div>`:""}`;}
 function bContact(){$("#fs").onclick=()=>{const m=$("#fm").value.trim();if(m.length<5){$("#fe").textContent="Kamida 5 belgi yozing.";return;}FB.unshift({n:$("#fn").value.trim(),c:$("#fc").value.trim(),m});aud("Fikr-mulohaza yuborildi");render();};}
@@ -372,8 +372,30 @@ function civ(v){
   document.querySelectorAll("[data-c]").forEach(b=>b.onclick=()=>civ(b.dataset.c));
   ({check:bCheck,report:bReport,quiz:bQuiz,org:bOrg,map:bMap,priv:bPriv,contact:bContact}[CV]||(()=>{}))();
 }
-IC.civ=IC.shield;
-foot();login();
+IC.civ=IC.shield;IC.adm=IC.list;
+let AR=[],XN=0;
+function acc(msg){
+  app.innerHTML=`<div class="card login"><div style="text-align:center">${LOGO(64)}<h1>Xodim hisobi uchun ariza</h1><div class="mut">Davlat va xavfsizlik idoralari xodimlari uchun. Ariza tekshiriladi, toʻlov tasdiqlangach login va parol beriladi.</div></div><input id="an" placeholder="Ism-familiya"><input id="ao" placeholder="Idora yoki tashkilot"><input id="ap" placeholder="Lavozim"><input id="ac" placeholder="Rasmiy pochta yoki telefon"><select id="at"><option>Oylik obuna</option><option>Yillik obuna</option></select><div class="note">Narx va toʻlov usuli ariza tekshirilgach aytiladi. Demo: haqiqiy toʻlov yoʻq.</div><div class="err" id="e">${msg||""}</div><button class="pri" id="aok">Ariza yuborish</button><button id="ab">Orqaga</button></div>`;
+  $("#ab").onclick=()=>login();
+  $("#aok").onclick=()=>{const v=k=>$("#"+k).value.trim();
+    if(!v("an")||!v("ao")||!v("ac"))return acc("Ism, idora va aloqa maʼlumoti kerak.");
+    AR.unshift({n:v("an"),org:v("ao"),pos:v("ap")||"—",ct:v("ac"),plan:$("#at").value,st:"Yangi",tm:new Date().toISOString().slice(0,16).replace("T"," ")});
+    aud("Xodim hisobi uchun ariza");
+    app.innerHTML=`<div class="card login"><h2>Arizangiz qabul qilindi</h2><p class="mut">Tekshiruv va toʻlovdan keyin login va parol beriladi.</p><button class="pri" id="bk">Bosh sahifaga</button></div>`;
+    $("#bk").onclick=()=>{S.user=USERS.mehmon;civ("guide");};};
+}
+function adm(){
+  S.view="adm";
+  if(S.user.role!=="admin"){app.innerHTML=bar()+`<div class="card mut">Faqat admin uchun.</div>`;bindOut();return;}
+  const st=Object.entries(USERS).filter(([k,u])=>u.role==="tergovchi");
+  app.innerHTML=bar()+`<div class="card"><h3>Xodim hisobi arizalari (${AR.length})</h3>${AR.length?AR.map((a,i)=>`<div style="border-top:1px solid var(--line);padding:10px 0"><b>${esc(a.n)}</b> · ${esc(a.org)} · ${esc(a.pos)}<div class="mut">${esc(a.ct)} · ${a.plan} · ${a.tm}</div><span class="tag">${a.st}</span>${a.cred?`<div class="note">Beriladigan hisob: <b>${a.cred}</b></div>`:""}${a.st==="Yangi"?`<div style="margin-top:6px"><button class="pri" data-ok="${i}">Tasdiqlash (toʻlov qabul qilindi)</button> <button data-no="${i}">Rad etish</button></div>`:""}</div>`).join(""):`<p class="mut">Hozircha ariza yoʻq.</p>`}</div><div class="card" style="margin-top:12px"><h3>Faol xodim hisoblari (${st.length})</h3>${st.map(([k,u])=>`<div style="border-top:1px solid var(--line);padding:8px 0">${esc(u.name)} (${esc(k)}) <button data-bl="${k}">Bloklash</button></div>`).join("")||`<p class="mut">Yoʻq.</p>`}</div><div class="note">Demo: haqiqiy tizimda parol shifrlangan holda serverda saqlanadi va toʻlov tizimiga ulanadi.</div>`;
+  bindOut();
+  document.querySelectorAll("[data-ok]").forEach(b=>b.onclick=()=>{const a=AR[+b.dataset.ok],l="xodim"+(++XN),p=Array.from(crypto.getRandomValues(new Uint8Array(8)),x=>"abcdefghjkmnpqrstuvwxyz23456789"[x%31]).join("");
+    USERS[l]={pw:p,role:"tergovchi",name:a.n};a.st="Tasdiqlandi";a.cred=l+" / "+p;aud("Xodim hisobi berildi: "+l);adm();});
+  document.querySelectorAll("[data-no]").forEach(b=>b.onclick=()=>{AR[+b.dataset.no].st="Rad etildi";aud("Ariza rad etildi");adm();});
+  document.querySelectorAll("[data-bl]").forEach(b=>b.onclick=()=>{delete USERS[b.dataset.bl];aud("Hisob bloklandi: "+b.dataset.bl);adm();});
+}
+foot();S.user=USERS.mehmon;civ("guide");
 </script>
 </body>
 </html>
